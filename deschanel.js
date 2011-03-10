@@ -101,9 +101,10 @@ function theotherdeschanel_start($_) {
         // replace images
         $_('img, input[type=image]').each(function() {
           if (typeof $_(this).attr('src') != 'undefined' && ($_(this).attr('alt').match($_.theotherdeschanel.settings.search) || $_(this).attr('title').match($_.theotherdeschanel.settings.search) || $_(this).attr('src').match($_.theotherdeschanel.settings.search))) {
-            var r = $_(this), w = r.width(), h = r.height(), orientation = theotherdeschanel_getorientation(w, h);
-            var p = images[orientation].length;
-            var new_img = images[orientation][Math.round(Math.random()*(p-1))];
+            var r = $_(this), w = r.width(), h = r.height(), orientation, p, new_img;
+            orientation = theotherdeschanel_getorientation(w, h);
+            p = images[orientation].length;
+            new_img = images[orientation][Math.round(Math.random()*(p-1))];
             r.css({width: r.width(), height: r.height()}).attr('src', new_img).width(w).height(h);
           }
         });
