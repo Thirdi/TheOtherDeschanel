@@ -125,7 +125,6 @@ function theotherdeschanel_start($_) {
       }
     });
 
-    // TODO determine replacement strategy
     var zooey2emily = {
         search: [/(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, /(zooey)/img], 
         replace: ['Emily Deschanel', 'Emily'], 
@@ -135,18 +134,18 @@ function theotherdeschanel_start($_) {
 	        vertical:['http://bones.download-tvshows.com/wp-content/uploads/2009/12/Emily-Deschanel2.jpeg', 'http://www.buddytv.com/articles/Bones/Images/emily-deschanel-2.jpg', 'http://everyjoe.com/files/2008/05/emily-deschanel-uf08-02_nc.jpg', 'http://www.zap2it.com/media/photo/2008-07/41025849.jpg', 'http://ia.media-imdb.com/images/M/MV5BMTg2MDQxNDUyMl5BMl5BanBnXkFtZTcwMjM1MjMzMw@@._V1._SX278_SY400_.jpg']
 				}
     };
-//    var emily2zooey = {
-//        search: [/(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, /(zooey)/img], 
-//        replace: ['Emily Deschanel', 'Emily'], 
-//        images : {
-//	        horizontal:['http://www.wallpaperbase.com/wallpapers/celebs/emilydeschanel/emily_deschanel_1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emily-deschanel1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emilydeschanelstatementzq7.jpg', 'http://jam.canoe.ca/Movies/Artists/D/Deschanel_Zooey/2009/01/28/sis.jpg', 'http://images4.fanpop.com/image/photos/16500000/Emily-emily-deschanel-16542203-500-313.jpg'],
-//	        square:['http://cdn.pastemagazine.com/www/articles/Emily-Deschanel-300x300.jpg?1272976109', 'http://1.bp.blogspot.com/_R6fjR09VKlw/S4sRZ32YrzI/AAAAAAAAAPU/2Wkc9slIjAU/s400/Emily%2BDeschanel.jpg', 'http://www.hairstylestalk.com/images/emily-deschanel1.jpg', 'http://img2.timeinc.net/instyle/images/2009/GalxMonth/08/081109-emily-deschanel-400.jpg', 'http://t1.gstatic.com/images?q=tbn:ANd9GcTpwFs5bv_pBK60T_aTX8_HJihOttRYYI9d1qgtddjdwUlXGN8B', 'http://4.bp.blogspot.com/_1Ssoxfl0MvQ/SSZrgMSbefI/AAAAAAAAHEU/1OBFHI5fDmk/s400/EmilyDeschanel.jpg', 'http://images.buddytv.com/articles/zooey.JPG'],
-//	        vertical:['http://bones.download-tvshows.com/wp-content/uploads/2009/12/Emily-Deschanel2.jpeg', 'http://www.buddytv.com/articles/Bones/Images/emily-deschanel-2.jpg', 'http://everyjoe.com/files/2008/05/emily-deschanel-uf08-02_nc.jpg', 'http://www.zap2it.com/media/photo/2008-07/41025849.jpg', 'http://ia.media-imdb.com/images/M/MV5BMTg2MDQxNDUyMl5BMl5BanBnXkFtZTcwMjM1MjMzMw@@._V1._SX278_SY400_.jpg']
-//				}
-//    };
-//console.log(zooey2emily);    
+    var emily2zooey = {
+        search: [/(emily(\s|\-|\_)?)(erin(\s|\-\_))?(deschanel)/img, /(emily)/img], 
+        replace: ['Zooey Deschanel', 'Zooey'], 
+        images : {
+	        horizontal:['http://www.filmschoolrejects.com/images/deschanel-zooey_584.jpg', 'http://images.fanpop.com/images/image_uploads/Zooey-Deschanel-zooey-deschanel-160428_1024_768.jpg', 'http://www.allnewmoviereviews.com/wp-content/uploads/2010/11/zooey_deschanel.jpg', 'http://www.ugo.com/images/galleries/zooeydeschanel_music/zooeydeschanel1.jpg', 'http://beatcrave.frsucrave.netdna-cdn.com/wp-content/uploads/2008/12/zooey.jpg'],
+	        square:['http://pictures.directnews.co.uk/liveimages/Zooey+Deschanel_1988_19634690_0_0_7012467_300.jpg', 'http://www.parade.com/images/-v4/celebrity/2009/0719/default-zooey-deschanel.jpg', 'http://1.bp.blogspot.com/_Uaxrp_-Co5k/SpagFLz4YsI/AAAAAAAABGU/WYO7KB8eMkc/s400/Zooey+Deschanel.jpg', 'http://i2.listal.com/image/289604/300.jpg', 'http://www.zimbio.com/Zooey+Deschanel+Hair'],
+	        vertical:['http://www.dailymakeover.com/appImages/galleryImages/all_womens_looks/Zooey_Deschanel+June_24_2009.jpg', 'http://www.hairfinder.com/celebrityhairstyles/zooey-deschanel.jpg', 'http://www.hairfinder.com/celebrityhairstyles/zooey-deschanel.jpg', 'http://violetboutique.ca/wp-content/uploads/2010/11/zooey_deschanel_mode_large_qualite_uk.jpg', 'http://files.myopera.com/celebfan/albums/713764/300px-zooey-deschanel-1.jpg']
+				}
+    };
 	  $_.extend($_.theotherdeschanel, {
 	  	settings: zooey2emily
+//	  	settings: emily2zooey
 	  });
     
   })($_);
