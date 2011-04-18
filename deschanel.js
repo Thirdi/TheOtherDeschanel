@@ -54,24 +54,18 @@ function theotherdeschanel_start($_) {
 
     $_.extend($_.theotherdeschanel, {
       settings : {
-								starred: '****** ******', 
-								init : false, 
-								finish : false, 
-    	          search: /(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, 
-    	          replace: 'Emily Deschanel', 
-//    	          search: ['/(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img', '/(zooey)/img'], 
-//    	          replace: ['Emily Deschanel', 'Emily'], 
-    	          images : {
-					        horizontal:['http://www.wallpaperbase.com/wallpapers/celebs/emilydeschanel/emily_deschanel_1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emily-deschanel1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emilydeschanelstatementzq7.jpg', 'http://jam.canoe.ca/Movies/Artists/D/Deschanel_Zooey/2009/01/28/sis.jpg', 'http://images4.fanpop.com/image/photos/16500000/Emily-emily-deschanel-16542203-500-313.jpg'],
-					        square:['http://cdn.pastemagazine.com/www/articles/Emily-Deschanel-300x300.jpg?1272976109', 'http://1.bp.blogspot.com/_R6fjR09VKlw/S4sRZ32YrzI/AAAAAAAAAPU/2Wkc9slIjAU/s400/Emily%2BDeschanel.jpg', 'http://www.hairstylestalk.com/images/emily-deschanel1.jpg', 'http://img2.timeinc.net/instyle/images/2009/GalxMonth/08/081109-emily-deschanel-400.jpg', 'http://t1.gstatic.com/images?q=tbn:ANd9GcTpwFs5bv_pBK60T_aTX8_HJihOttRYYI9d1qgtddjdwUlXGN8B', 'http://4.bp.blogspot.com/_1Ssoxfl0MvQ/SSZrgMSbefI/AAAAAAAAHEU/1OBFHI5fDmk/s400/EmilyDeschanel.jpg', 'http://images.buddytv.com/articles/zooey.JPG'],
-					        vertical:['http://bones.download-tvshows.com/wp-content/uploads/2009/12/Emily-Deschanel2.jpeg', 'http://www.buddytv.com/articles/Bones/Images/emily-deschanel-2.jpg', 'http://everyjoe.com/files/2008/05/emily-deschanel-uf08-02_nc.jpg', 'http://www.zap2it.com/media/photo/2008-07/41025849.jpg', 'http://ia.media-imdb.com/images/M/MV5BMTg2MDQxNDUyMl5BMl5BanBnXkFtZTcwMjM1MjMzMw@@._V1._SX278_SY400_.jpg']
-    						}
+				starred: '****** ******', 
+				init : false, 
+				finish : false 
     	},
 
-//      pluck : function(str) {return str.replace(/(zooey(\s|\-|\_)?)?(deschanel)/img, 'Emily Deschanel').replace(/(zooey)/img, 'Emily');},
-//    pluck : function(str) {return str.replace(/(zooey(\s|\-|\_)?)?(deschanel)/img, 'Emily Deschanel').replace(/(zooey)/img, 'Emily');},
-//      pluck : function(str) { console.log('foo', $_.theotherdeschanel.settings.search); return str.replace($_.theotherdeschanel.settings.search[0], $_.theotherdeschanel.settings.replace[0]).replace($_.theotherdeschanel.settings.search[1], $_.theotherdeschanel.settings.search[1]);},
-      pluck : function(str) {return str.replace($_.theotherdeschanel.settings.search, $_.theotherdeschanel.settings.replace);},
+      pluck : function(str) {
+    		var ret = str;
+    		for (var i = 0; i < $_.theotherdeschanel.settings.search.length; i++) {
+    			ret = ret.replace($_.theotherdeschanel.settings.search[i], $_.theotherdeschanel.settings.replace[i]);
+    		}
+    		return ret;
+    	},
 
       filter : function(self) {
         if (self.nodeType == 1) {
@@ -87,16 +81,20 @@ function theotherdeschanel_start($_) {
 
         if (self.nodeType == 3) {
           if (self.nodeValue.replace(/\s/ig, '') != '') {
-            text = self.nodeValue.replace($_.theotherdeschanel.settings.search, $_.theotherdeschanel.settings.replace.replace(/\%C/mg) );
-            $_(self).after(text);
-            self.nodeValue = '';
+          	for (var i = 0; i < $_.theotherdeschanel.settings.search.length; i++) {
+              text = self.nodeValue.replace($_.theotherdeschanel.settings.search[i], $_.theotherdeschanel.settings.replace[i].replace(/\%C/mg) );
+              $_(self).after(text);
+              self.nodeValue = '';
+          	}
           }
         } else if (self.nodeType == 1) {
           if ($_(self).children().length > 0) {
             $_.theotherdeschanel($_(self).contents());
           } else if ($_(self).children().length == 0) {
-            text = $_(self).html().replace($_.theotherdeschanel.settings.search, $_.theotherdeschanel.settings.replace.replace(/\%C/mg) );
-            $_(self).html(text);
+          	for (var i = 0; i < $_.theotherdeschanel.settings.search.length; i++) {
+              text = $_(self).html().replace($_.theotherdeschanel.settings.search[i], $_.theotherdeschanel.settings.replace[i].replace(/\%C/mg) );
+              $_(self).html(text);
+          	}
           }
         }
       },
@@ -112,23 +110,44 @@ function theotherdeschanel_start($_) {
 
         // replace images
         $_('img, input[type=image]').each(function() {
-          if (typeof $_(this).attr('src') != 'undefined' && ($_(this).attr('alt').match($_.theotherdeschanel.settings.search) || $_(this).attr('title').match($_.theotherdeschanel.settings.search) || $_(this).attr('src').match($_.theotherdeschanel.settings.search))) {
-            var r = $_(this), w = r.width(), h = r.height(), orientation, p, new_img;
-            orientation = theotherdeschanel_getorientation(w, h);
-            p = images[orientation].length;
-            new_img = images[orientation][Math.round(Math.random()*(p-1))];
-            r.css({width: r.width(), height: r.height()}).attr('src', new_img).width(w).height(h);
-          }
+        	for (var i = 0; i < $_.theotherdeschanel.settings.search.length; i++) {
+            if (typeof $_(this).attr('src') != 'undefined' && ($_(this).attr('alt').match($_.theotherdeschanel.settings.search[i]) || $_(this).attr('title').match($_.theotherdeschanel.settings.search[i]) || $_(this).attr('src').match($_.theotherdeschanel.settings.search[i]))) {
+              var r = $_(this), w = r.width(), h = r.height(), orientation, p, new_img;
+              orientation = theotherdeschanel_getorientation(w, h);
+              p = images[orientation].length;
+              new_img = images[orientation][Math.round(Math.random()*(p-1))];
+              r.css({width: r.width(), height: r.height()}).attr('src', new_img).width(w).height(h);
+            }
+        	}
         });
 
         $_.theotherdeschanel.settings.finish = true;
       }
     });
 
-    // TODO
-//    $_.extend($_.theotherdeschanel, {
-//    	settings: { search: /(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, replace: 'Emily2 Deschanel', starred: '****** ******', init : false, finish : false }
-//    });
+    // TODO determine replacement strategy
+    var zooey2emily = {
+        search: [/(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, /(zooey)/img], 
+        replace: ['Emily Deschanel', 'Emily'], 
+        images : {
+	        horizontal:['http://www.wallpaperbase.com/wallpapers/celebs/emilydeschanel/emily_deschanel_1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emily-deschanel1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emilydeschanelstatementzq7.jpg', 'http://jam.canoe.ca/Movies/Artists/D/Deschanel_Zooey/2009/01/28/sis.jpg', 'http://images4.fanpop.com/image/photos/16500000/Emily-emily-deschanel-16542203-500-313.jpg'],
+	        square:['http://cdn.pastemagazine.com/www/articles/Emily-Deschanel-300x300.jpg?1272976109', 'http://1.bp.blogspot.com/_R6fjR09VKlw/S4sRZ32YrzI/AAAAAAAAAPU/2Wkc9slIjAU/s400/Emily%2BDeschanel.jpg', 'http://www.hairstylestalk.com/images/emily-deschanel1.jpg', 'http://img2.timeinc.net/instyle/images/2009/GalxMonth/08/081109-emily-deschanel-400.jpg', 'http://t1.gstatic.com/images?q=tbn:ANd9GcTpwFs5bv_pBK60T_aTX8_HJihOttRYYI9d1qgtddjdwUlXGN8B', 'http://4.bp.blogspot.com/_1Ssoxfl0MvQ/SSZrgMSbefI/AAAAAAAAHEU/1OBFHI5fDmk/s400/EmilyDeschanel.jpg', 'http://images.buddytv.com/articles/zooey.JPG'],
+	        vertical:['http://bones.download-tvshows.com/wp-content/uploads/2009/12/Emily-Deschanel2.jpeg', 'http://www.buddytv.com/articles/Bones/Images/emily-deschanel-2.jpg', 'http://everyjoe.com/files/2008/05/emily-deschanel-uf08-02_nc.jpg', 'http://www.zap2it.com/media/photo/2008-07/41025849.jpg', 'http://ia.media-imdb.com/images/M/MV5BMTg2MDQxNDUyMl5BMl5BanBnXkFtZTcwMjM1MjMzMw@@._V1._SX278_SY400_.jpg']
+				}
+    };
+//    var emily2zooey = {
+//        search: [/(zooey(\s|\-|\_)?)(claire(\s|\-\_))?(deschanel)/img, /(zooey)/img], 
+//        replace: ['Emily Deschanel', 'Emily'], 
+//        images : {
+//	        horizontal:['http://www.wallpaperbase.com/wallpapers/celebs/emilydeschanel/emily_deschanel_1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emily-deschanel1.jpg', 'http://gearpatrol.com/blog/wp-content/uploads/2008/10/emilydeschanelstatementzq7.jpg', 'http://jam.canoe.ca/Movies/Artists/D/Deschanel_Zooey/2009/01/28/sis.jpg', 'http://images4.fanpop.com/image/photos/16500000/Emily-emily-deschanel-16542203-500-313.jpg'],
+//	        square:['http://cdn.pastemagazine.com/www/articles/Emily-Deschanel-300x300.jpg?1272976109', 'http://1.bp.blogspot.com/_R6fjR09VKlw/S4sRZ32YrzI/AAAAAAAAAPU/2Wkc9slIjAU/s400/Emily%2BDeschanel.jpg', 'http://www.hairstylestalk.com/images/emily-deschanel1.jpg', 'http://img2.timeinc.net/instyle/images/2009/GalxMonth/08/081109-emily-deschanel-400.jpg', 'http://t1.gstatic.com/images?q=tbn:ANd9GcTpwFs5bv_pBK60T_aTX8_HJihOttRYYI9d1qgtddjdwUlXGN8B', 'http://4.bp.blogspot.com/_1Ssoxfl0MvQ/SSZrgMSbefI/AAAAAAAAHEU/1OBFHI5fDmk/s400/EmilyDeschanel.jpg', 'http://images.buddytv.com/articles/zooey.JPG'],
+//	        vertical:['http://bones.download-tvshows.com/wp-content/uploads/2009/12/Emily-Deschanel2.jpeg', 'http://www.buddytv.com/articles/Bones/Images/emily-deschanel-2.jpg', 'http://everyjoe.com/files/2008/05/emily-deschanel-uf08-02_nc.jpg', 'http://www.zap2it.com/media/photo/2008-07/41025849.jpg', 'http://ia.media-imdb.com/images/M/MV5BMTg2MDQxNDUyMl5BMl5BanBnXkFtZTcwMjM1MjMzMw@@._V1._SX278_SY400_.jpg']
+//				}
+//    };
+//console.log(zooey2emily);    
+	  $_.extend($_.theotherdeschanel, {
+	  	settings: zooey2emily
+	  });
     
   })($_);
 
